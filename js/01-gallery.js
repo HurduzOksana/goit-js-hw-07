@@ -32,15 +32,27 @@ galleryList.insertAdjacentHTML(`afterbegin`, galleryCardContainer.join(``));
 // Назначаємо слухача на клік
 galleryList.addEventListener(`click`, imageClick);
 
-// Запобігаємо перезавантаженню сторінки
+
 function imageClick(event) {
+    // Запобігаємо перезавантаженню сторінки
     event.preventDefault();
+    // Робимо перевірку делегування
+    if (event.target.nodeName !== "IMG") {
+    return;
+  }
+    // Підключаемо відкриття модального вікна за допомогою бібліотеки
+    const instance = basicLightbox.create(`
+    <img src="${event.target.dataset.source}" width="800" height="600">
+`)
+
+    instance.show();
+    
+    // Додаємо закриття модального вікна після натискання клавіші Escape
+    galleryList.addEventListener(`keydown`, (event) => {
+    if (event.code === `Escape`) {
+        instance.close()
+    }
+});
+
 }
 
-// Робимо делегування
-
-// Підключаемо модалку за допомогою бібліотеки
-
-// Додай закриття модального вікна після натискання клавіші Escape.Зроби так,
-// щоб прослуховування клавіатури було тільки доти, доки відкрите модальне вікно.
-// Бібліотека basicLightbox містить метод для програмного закриття модального вікна.
